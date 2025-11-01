@@ -4,10 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Imprimir</title>
+    <link rel="stylesheet" href="label_input.css"> 
     <style>
-      /* Estilos para a visualização na tela (antes da impressão).
-      Isso faz a imagem aparecer centralizada e com um fundo suave.
-    */
+      /* Estilos para a visualização na tela (antes da impressão). */
       body {
         margin: 0;
         padding: 0;
@@ -24,36 +23,39 @@
         max-height: 90vh;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
       }
+      
+      /* O #label-content será estilizado pelo label_input.css e ficará visível aqui. */
+      #label-content {
+          display: none; /* Esconde na visualização normal da página, só o JS vai exibir*/
+      }
 
-      /* ESTA É A PARTE MAIS IMPORTANTE:
-      Como a página deve se parecer NO PAPEL.
-    */
+      /* ESTA É A PARTE MAIS IMPORTANTE: Como a página deve se parecer NO PAPEL. */
       @media print {
         /* Remove todos os fundos e sombras */
         body {
           background-color: #fff;
-          display: block; /* Reseta o 'flex' */
+          display: block; 
           margin: 0;
           padding: 0;
         }
 
-        /* Faz a imagem ocupar 100% da largura do papel,
-        removendo margens e sombras.
-      */
+        /* Faz a imagem ocupar 100% da largura do papel, */
         #printImage {
           width: 100%;
           max-width: 100%;
-          max-height: 100%;
+          height: auto;
           box-shadow: none;
-          margin: 0;
-          padding: 0;
         }
+        
+        /* O estilo para #label-content é definido em label_input.css e é aplicado aqui */
       }
     </style>
   </head>
   <body>
-    <img id="printImage" alt="Carregando seleção para impressão..." />
-
+    <img id="printImage" style="display: none;" /> 
+    
+    <div id="label-content" style="display: none;"></div> 
+    
     <script src="print.js"></script>
   </body>
 </html>
