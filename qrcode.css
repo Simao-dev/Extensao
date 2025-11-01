@@ -1,53 +1,85 @@
+ body {
+     width: 200px;
+     padding: 10px;
+     font-family: sans-serif;
+     border: 1px solid black;
+     border-radius: 5px;
+ }
 
-.qr-code-generator * {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
+ button {
+     width: 100%;
+     padding: 10px;
+     margin-bottom: 8px;
+     cursor: pointer;
+     border: 1px solid #ccc;
+     background-color: #f0f0f0;
+     border-radius: 4px;
+     font-size: 14px;
+ }
 
-#qrcode {
-    width: 128px;
-    margin-bottom: 10px;
-}
+ button:hover {
+     background-color: #e0e0e0;
+ }
 
-#qrcode a {
-    font-size: 0.8em;
-}
+ .print-btn {
+     background-color: #4CAF50;
+     color: white;
+     border-color: #4CAF50;
+ }
 
-input {
-    box-shadow: 0px 2px 6px black;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.30)
-}
+ .print-btn:hover {
+     background-color: #45a049;
+ }
 
-.qr-url,
-.qr-size {
-    padding: 0.5em;
-    border: 1px solid #ddd;
-    border-radius: 2px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
+ .qr-code-generator * {
+     -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+     box-sizing: border-box;
+ }
 
-.qr-url {
-    width: 100%;
-    margin-bottom: 10px;
-}
+ #qrcode {
+     width: 128px;
+     margin-bottom: 10px;
+ }
 
-.qr-size {
-    width: 45%;
-}
+ #qrcode a {
+     font-size: 0.8em;
+ }
 
-.generate-qr-code {
-    display: block;
-    width: 100%;
-    margin: 0.5em 0 0;
-    padding: 0.25em;
-    font-size: 1.2em;
-    border: none;
-    cursor: pointer;
-    background-color: #000000;
-    box-shadow: 0px 2px 6px black;
-    color: #fff;
-}
+ input {
+     box-shadow: 0px 2px 6px black;
+     color: white;
+     background-color: rgba(0, 0, 0, 0.30)
+ }
+
+ .qr-url,
+ .qr-size {
+     padding: 0.5em;
+     border: 1px solid #ddd;
+     border-radius: 2px;
+     -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+     box-sizing: border-box;
+ }
+
+ .qr-url {
+     width: 100%;
+     margin-bottom: 10px;
+ }
+
+ .qr-size {
+     width: 45%;
+ }
+
+ .generate-qr-code {
+     display: block;
+     width: 100%;
+     margin: 0.5em 0 0;
+     padding: 0.25em;
+     font-size: 1.2em;
+     border: none;
+     cursor: pointer;
+     background-color: #000000;
+     box-shadow: 0px 2px 6px black;
+     color: #fff;
+ }
