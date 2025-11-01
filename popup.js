@@ -1,17 +1,20 @@
-// Ficheiro: popup.js
+// popup.js
 
-document.getElementById('btn-print-selection').addEventListener('click', () => {
-    // 1. Envia a mensagem para o Service Worker (background.js)
-    chrome.runtime.sendMessage({ action: 'START_PRINT_SELECTION' });
-    
-    // 2. Fecha o pop-up imediatamente
-    window.close();
-});
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Lógica para mostrar o gerador de QR Code
+    const showQrButton = document.getElementById('btn-show-qr-generator');
+    const qrSection = document.getElementById('qr-generator-section');
 
-document.getElementById('btn-label-input').addEventListener('click', () => {
-    // 1. Envia a mensagem para o Service Worker (background.js)
-    chrome.runtime.sendMessage({ action: 'START_LABEL_INPUT' });
-    
-    // 2. Fecha o pop-up imediatamente
-    window.close();
+    if (showQrButton && qrSection) {
+        showQrButton.addEventListener('click', function() {
+            // Alterna a exibição:
+            // O CSS define display: none;
+            // O JavaScript alterna para display: block;
+            if (qrSection.style.display === 'none' || qrSection.style.display === '') {
+                qrSection.style.display = 'block';
+            } else {
+                qrSection.style.display = 'none';
+            }
+        });
+    }
 });

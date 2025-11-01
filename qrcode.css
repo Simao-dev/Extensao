@@ -31,19 +31,33 @@ button:hover {
 .print-btn:hover {
     background-color: #45a049;
 }
+
+/* CORREÇÃO 1: Oculta a div principal por padrão e aplica estilos de centralização */
 .qr-code-generator {
-     display: none; 
-     margin-top: 10%; 
-     text-align: center;
+    /* ESSENCIAL: Oculta a seção por padrão (será exibida pelo popup.js) */
+    display: none; 
+
+    /* Mantenha seus estilos */
+    margin-top: 10%; 
+    text-align: center; /* Mantém o conteúdo centralizado */
+    /* Removido: left: 10%; justify-content: center; pois text-align: center e margin: auto são suficientes */
 }
 
+/* CORREÇÃO 2: Remove a regra display: none; do seletor universal que estava causando o bug */
 .qr-code-generator * {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    /* display: none; REMOVIDO DAQUI */
 }
 
-/* REGRA DE CENTRALIZAÇÃO CORRIGIDA - Novo ID */
+/* CORREÇÃO 3: Oculta o botão de impressão do QR Code por padrão */
+#btn-print-qrcode {
+    display: none;
+}
+
+
+/* REGRA DE CENTRALIZAÇÃO DO QR CODE - Novo ID */
 #qrcode-container {
     /* Define uma largura para que margin: auto funcione */
     width: 128px; 
@@ -55,8 +69,7 @@ button:hover {
     margin-bottom: 10px;
 }
 
-/* Se quiser garantir que a imagem/canvas dentro do container também se alinhe, 
-   embora o margin: auto no container já resolva na maioria dos casos. */
+/* Garante que a imagem/canvas dentro do container também se alinhe. */
 #qrcode-container canvas, 
 #qrcode-container img, 
 #qrcode-container div {
