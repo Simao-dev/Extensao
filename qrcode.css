@@ -1,85 +1,103 @@
- body {
-     width: 200px;
-     padding: 10px;
-     font-family: sans-serif;
-     border: 1px solid black;
-     border-radius: 5px;
- }
+/* Seu CSS Existente */
+body {
+    width: 200px;
+    padding: 10px;
+    font-family: sans-serif;
+    border: 1px solid black;
+    border-radius: 5px;
+}
 
- button {
-     width: 100%;
-     padding: 10px;
-     margin-bottom: 8px;
-     cursor: pointer;
-     border: 1px solid #ccc;
-     background-color: #f0f0f0;
-     border-radius: 4px;
-     font-size: 14px;
- }
+button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    font-size: 14px;
+}
 
- button:hover {
-     background-color: #e0e0e0;
- }
+button:hover {
+    background-color: #e0e0e0;
+}
 
- .print-btn {
-     background-color: #4CAF50;
-     color: white;
-     border-color: #4CAF50;
- }
+.print-btn {
+    background-color: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+}
 
- .print-btn:hover {
-     background-color: #45a049;
- }
+.print-btn:hover {
+    background-color: #45a049;
+}
 
- .qr-code-generator * {
-     -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-     box-sizing: border-box;
- }
+.qr-code-generator * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
 
- #qrcode {
-     width: 128px;
-     margin-bottom: 10px;
- }
+/* REGRA DE CENTRALIZAÇÃO CORRIGIDA - Novo ID */
+#qrcode-container {
+    /* Define uma largura para que margin: auto funcione */
+    width: 128px; 
+    
+    /* Centraliza o bloco horizontalmente */
+    margin-left: auto; 
+    margin-right: auto;
+    
+    margin-bottom: 10px;
+}
 
- #qrcode a {
-     font-size: 0.8em;
- }
+/* Se quiser garantir que a imagem/canvas dentro do container também se alinhe, 
+   embora o margin: auto no container já resolva na maioria dos casos. */
+#qrcode-container canvas, 
+#qrcode-container img, 
+#qrcode-container div {
+    display: block;
+    margin: 0 auto;
+}
 
- input {
-     box-shadow: 0px 2px 6px black;
-     color: white;
-     background-color: rgba(0, 0, 0, 0.30)
- }
 
- .qr-url,
- .qr-size {
-     padding: 0.5em;
-     border: 1px solid #ddd;
-     border-radius: 2px;
-     -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-     box-sizing: border-box;
- }
+#qrcode-container a { /* Mantenha esta regra se a biblioteca gerar links */
+    font-size: 0.8em;
+}
 
- .qr-url {
-     width: 100%;
-     margin-bottom: 10px;
- }
+input {
+    box-shadow: 0px 2px 6px black;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.30)
+}
 
- .qr-size {
-     width: 45%;
- }
+.qr-url,
+.qr-size {
+    padding: 0.5em;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
 
- .generate-qr-code {
-     display: block;
-     width: 100%;
-     margin: 0.5em 0 0;
-     padding: 0.25em;
-     font-size: 1.2em;
-     border: none;
-     cursor: pointer;
-     background-color: #000000;
-     box-shadow: 0px 2px 6px black;
-     color: #fff;
- }
+.qr-url {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.qr-size {
+    width: 45%;
+}
+
+.generate-qr-code {
+    display: block;
+    width: 100%;
+    margin: 0.5em 0 0;
+    padding: 0.25em;
+    font-size: 1.2em;
+    border: none;
+    cursor: pointer;
+    background-color: #000000;
+    box-shadow: 0px 2px 6px black;
+    color: #fff;
+}
