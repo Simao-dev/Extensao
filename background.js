@@ -27,15 +27,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         return true;
     }
 
-    // ==========================================================
-    // AÇÃO 2: CRIAR ETIQUETA DIGITADA (do popup.js)
-    // ==========================================================
-    if (request.action === 'START_LABEL_INPUT') {
-        // Simplesmente abre a nova aba com o formulário
-        chrome.tabs.create({ url: "label_input.html" });
-        return true;
-    }
-
+    // AÇÃO 2: CRIAR ETIQUETA DIGITADA (REMOVIDA: Agora está em popup.js)
+    
     // ==========================================================
     // AÇÃO 3: RECEBER COORDENADAS E FAZER O RECORTE (do content-script.js)
     // ==========================================================

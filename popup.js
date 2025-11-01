@@ -5,14 +5,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // === 1. Lógica do Gerador de QR Code (Alternar Visibilidade) ===
     const showQrButton = document.getElementById('btn-show-qr-generator');
     const qrSection = document.getElementById('qr-generator-section');
+    const labelSection = document.getElementById('label-input-section'); // NOVO
+
+    // Função auxiliar para alternar a visibilidade de uma seção
+    function toggleSection(sectionElement) {
+        if (sectionElement.style.display === 'none' || sectionElement.style.display === '') {
+            sectionElement.style.display = 'block';
+        } else {
+            sectionElement.style.display = 'none';
+        }
+    }
 
     if (showQrButton && qrSection) {
         showQrButton.addEventListener('click', function() {
-            // Alterna a exibição:
-            if (qrSection.style.display === 'none' || qrSection.style.display === '') {
-                qrSection.style.display = 'block';
-            } else {
-                qrSection.style.display = 'none';
+            toggleSection(qrSection);
+            // Esconde outras seções, se estiverem abertas
+            if (labelSection && labelSection.style.display === 'block') {
+                 labelSection.style.display = 'none';
             }
         });
     }
@@ -46,6 +55,49 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // === 3. Lógica para o botão "Criar Etiqueta (Digitada)" ===
     document.getElementById('btn-label-input').addEventListener('click', () => {
-        handleExtensionAction("START_LABEL_INPUT");
+        // Altera a visibilidade da seção de etiqueta
+        if (labelSection) {
+            toggleSection(labelSection);
+             // Esconde outras seções, se estiverem abertas
+            if (qrSection.style.display === 'block') {
+                 qrSection.style.display = 'none';
+            }
+        }
     });
+
+    // ==========================================================
+    // === NOVO: 4. Lógica de Impressão de Etiqueta no Popup ===
+    // (Migrado de label_input.js)
+    // ==========================================================
+    const printLabelPopupBtn = document.getElementById('print-label-popup-btn');
+    if (printLabelPopupBtn) {
+        printLabelPopupBtn.addEventListener('click', () => {
+            // 1. Captura os valores dos inputs
+            const clientName = document.getElementById('client-name').value;
+            const orderNumber = document.getElementById('order-number').value;
+            
+            const contentDiv = document.getElementById('label-content');
+            
+            // 2. Formata o texto para a etiqueta
+            const formattedText = 
+                `CLIENTE: ${clientName}\n` +
+                `PEDIDO: ${orderNumber}\n` +
+                `---------------------------\n` +
+                `IMPRESSO EM: ${new Date().toLocaleDateString('pt-BR')}`;
+            
+            // 3. Coloca o texto formatado na div de impressão e a exibe (temporariamente)
+            contentDiv.textContent = formattedText; 
+            contentDiv.style.display = 'block';
+
+            // 4. Chama a janela de impressão
+            window.print();
+
+            // 5. Esconde a div de conteúdo de volta (após a impressão ou cancelamento)
+            // Fecha o popup após a tentativa de impressão
+            setTimeout(() => {
+                contentDiv.style.display = 'none';
+                window.close(); 
+            }, 100); 
+        });
+    }
 });

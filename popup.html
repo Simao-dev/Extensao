@@ -8,7 +8,7 @@
     <script src="lib/qrcode.min.js"></script>
     
     <link rel="stylesheet" href="qrcode.css">
-    <title>Menu</title>
+    <link rel="stylesheet" href="label_input.css"> <title>Menu</title>
 </head>
 <body>
     <h3>Escolha uma Opção</h3>
@@ -19,6 +19,12 @@
     
     <button id="btn-show-qr-generator">🔗 Gerar QR Code (URL/Texto)</button>
 
+    <div id="label-input-section" style="display:none; margin-top: 15px;">
+        <h4>Dados da Etiqueta</h4>
+        <input type="text" id="client-name" placeholder="Nome do Cliente" required />
+        <input type="text" id="order-number" placeholder="Número do Pedido" required />
+        <button id="print-label-popup-btn">🖨️ Imprimir Etiqueta</button>
+    </div>
     <div id="qr-generator-section" class="qr-code-generator" style="margin-top:10%; left: 10%; justify-content:center; text-align:center;">
         <div>
             <input type="text" class="qr-url" placeholder="URL ou texto">
@@ -31,6 +37,8 @@
         
         <button id="btn-print-qrcode" class="print-btn" style="margin-top: 10px;">🖨️ Imprimir QR Code</button>
     </div>
+
+    <div id="label-content" style="display:none;"></div> 
     
     <script src="popup.js"></script>
     <script src="qrcode.js"></script>
