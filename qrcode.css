@@ -7,6 +7,7 @@ body {
 }
 
 button {
+    color: white;
     width: 100%;
     padding: 10px;
     margin-bottom: 8px;
@@ -96,9 +97,9 @@ input {
 .generate-qr-code {
     display: block;
     width: 100%;
-    margin: 0.5em 0 0;
-    padding: 0.25em;
-    font-size: 1.2em;
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 14px;
     border: none;
     cursor: pointer;
     background-color: #007bff;
