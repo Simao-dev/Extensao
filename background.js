@@ -1,4 +1,4 @@
-// Ficheiro: background.js - VERSÃO FINAL ESTÁVEL PARA MV3
+// Ficheiro: background.js - VERSÃO FINAL ESTÁVEL PARA MV3 (CORRIGIDA)
 
 /**
  * Ouve mensagens vindas de outros scripts.
@@ -35,8 +35,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         
         if (w < 5 || h < 5) { 
             console.warn("Área de seleção muito pequena. Abortando print.");
+            // Envia a resposta de erro...
             sendResponse({ status: 'ERROR', message: 'Área muito pequena' });
-            return false; 
+            // ...e retorna true para informar ao Chrome que a resposta foi enviada
+            // (Mesmo que síncrona, a mensagem é tratada como assíncrona no final do bloco).
+            return true; // <-- CORREÇÃO: RETORNA TRUE AQUI
         }
         
         const pixelRatio = dpr || 1;
@@ -79,7 +82,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
         
         // Retorna true APENAS para esta mensagem que é assíncrona.
-        // O canal de comunicação será fechado após o sendResponse.
+        // O canal de comunicação será fechado após o sendResponse (sucesso ou erro).
         return true; 
     } 
 
