@@ -1,4 +1,4 @@
-// popup.js
+// Ficheiro: popup.js - VERSÃO OTIMIZADA
 
 document.addEventListener('DOMContentLoaded', function() {
     
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // 3. ENVIA a mensagem para o background.js para iniciar a impressão na nova aba
             chrome.runtime.sendMessage({
-                action: 'START_LABEL_PRINT', // Nova ação
+                action: 'START_LABEL_PRINT', // Ação correta
                 data: {
                     content: formattedText // Conteúdo formatado a ser impresso
                 }
