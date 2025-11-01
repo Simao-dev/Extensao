@@ -6,8 +6,25 @@
     <title>Criar Etiqueta</title>
     <style>
         body { padding: 20px; font-family: sans-serif; }
-        textarea { width: 100%; height: 150px; box-sizing: border-box; margin-bottom: 15px; }
-        button { padding: 10px 20px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+        
+        /* Novo estilo para os inputs */
+        input[type="text"] { 
+            width: 100%; 
+            padding: 10px; 
+            box-sizing: border-box; 
+            margin-bottom: 10px; 
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        button { 
+            padding: 10px 20px; 
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            width: 100%;
+        }
         
         /* ESTILOS PARA IMPRESSÃO (O CONTEÚDO DA ETIQUETA) */
         @media print {
@@ -27,26 +44,42 @@
                 line-height: 1.2;
                 white-space: pre-wrap; /* Mantém quebras de linha e espaços */
                 padding: 5mm;
+                /* Você pode querer definir um tamanho fixo para a etiqueta aqui, se for o caso. */
             }
         }
     </style>
 </head>
 <body>
-    <h2>Digite o Conteúdo da Etiqueta</h2>
-    <textarea id="label-text" placeholder="Digite aqui o texto que será impresso..."></textarea>
+    <h2>Dados da Etiqueta</h2>
+    
+    <input type="text" id="client-name" placeholder="Nome do Cliente" required />
+    
+    <input type="text" id="order-number" placeholder="Número do Pedido" required />
+    
     <button id="print-label-btn">🖨️ Imprimir Etiqueta</button>
 
     <div id="label-content"></div>
 
     <script>
         document.getElementById('print-label-btn').addEventListener('click', () => {
-            const text = document.getElementById('label-text').value;
+            // 1. Captura os valores dos novos inputs
+            const clientName = document.getElementById('client-name').value;
+            const orderNumber = document.getElementById('order-number').value;
+            
             const contentDiv = document.getElementById('label-content');
             
-            // Coloca o texto digitado na div de impressão
-            contentDiv.textContent = text; 
+            // 2. Formata o texto para a etiqueta (usando quebras de linha)
+            // Inclui rótulos claros para a impressão
+            const formattedText = 
+                `CLIENTE: ${clientName}\n` +
+                `PEDIDO: ${orderNumber}\n` +
+                `---------------------------\n` +
+                `IMPRESSO EM: ${new Date().toLocaleDateString('pt-BR')}`;
             
-            // Chama a janela de impressão
+            // 3. Coloca o texto formatado na div de impressão
+            contentDiv.textContent = formattedText; 
+            
+            // 4. Chama a janela de impressão
             window.print();
         });
     </script>
