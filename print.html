@@ -5,18 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Imprimir</title>
     <style>
+      /* Estilos para a visualização na tela (antes da impressão).
+      Isso faz a imagem aparecer centralizada e com um fundo suave.
+    */
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f0f0f0;
+      }
+
+      /* Estilo para a imagem na tela */
+      #printImage {
+        max-width: 90vw;
+        max-height: 90vh;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      /* ESTA É A PARTE MAIS IMPORTANTE:
+      Como a página deve se parecer NO PAPEL.
+    */
       @media print {
+        /* Remove todos os fundos e sombras */
         body {
+          background-color: #fff;
+          display: block; /* Reseta o 'flex' */
           margin: 0;
+          padding: 0;
         }
+
+        /* Faz a imagem ocupar 100% da largura do papel,
+        removendo margens e sombras.
+      */
         #printImage {
           width: 100%;
+          max-width: 100%;
+          max-height: 100%;
+          box-shadow: none;
+          margin: 0;
+          padding: 0;
         }
       }
     </style>
   </head>
   <body>
-    <img id="printImage" />
+    <img id="printImage" alt="Carregando seleção para impressão..." />
+
     <script src="print.js"></script>
   </body>
 </html>
