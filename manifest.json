@@ -3,7 +3,11 @@
   "name": "Impressão de Seleção",
   "version": "1.0",
   "description": "Seleciona uma área da tela e a imprime.",
-  "permissions": ["activeTab", "scripting"],
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "tabs" 
+  ],
   "background": {
     "service_worker": "background.js"
   },
