@@ -9,6 +9,19 @@
   },
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "storage" 
+  ],
+  "content_scripts": [ 
+    {
+      "matches": ["<all_urls>"],
+      "js": ["selector.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["selector.html"], 
+      "matches": ["<all_urls>"]
+    }
   ]
 }
