@@ -24,3 +24,28 @@ document.querySelector('.generate-qr-code').addEventListener('click', function (
         qrcodeContainer.innerHTML = 'Preencha a URL/texto e um tamanho válido.'; 
     }
 });
+
+// popup.js
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Lógica para mostrar o gerador de QR Code
+    const showQrButton = document.getElementById('btn-show-qr-generator');
+    const qrSection = document.getElementById('qr-generator-section');
+
+    if (showQrButton && qrSection) {
+        showQrButton.addEventListener('click', function() {
+            // Alterna a exibição:
+            if (qrSection.style.display === 'none' || qrSection.style.display === '') {
+                // Se estiver escondido, mostra como um bloco
+                qrSection.style.display = 'block';
+            } else {
+                // Se estiver visível, esconde
+                qrSection.style.display = 'none';
+            }
+        });
+    }
+
+    // Se houver outras lógicas de botões (print/etiqueta), elas viriam aqui
+});
+
+// Nota: O código de geração do QR Code está no qrcode.js

@@ -31,6 +31,11 @@ button:hover {
 .print-btn:hover {
     background-color: #45a049;
 }
+.qr-code-generator {
+     display: none; 
+     margin-top: 10%; 
+     text-align: center;
+}
 
 .qr-code-generator * {
     -webkit-box-sizing: border-box;
