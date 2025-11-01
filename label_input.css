@@ -1,0 +1,42 @@
+        body { padding: 20px; font-family: sans-serif; }
+        
+        /* Novo estilo para os inputs */
+        input[type="text"] { 
+            width: 100%; 
+            padding: 10px; 
+            box-sizing: border-box; 
+            margin-bottom: 10px; 
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        button { 
+            padding: 10px 20px; 
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            width: 100%;
+        }
+        
+        /* ESTILOS PARA IMPRESSÃO (O CONTEÚDO DA ETIQUETA) */
+        @media print {
+            body { 
+                margin: 0; 
+                padding: 0; 
+                /* Esconde tudo que não é o conteúdo da etiqueta */
+                visibility: hidden; 
+            }
+            #label-content { 
+                visibility: visible; 
+                position: absolute; 
+                left: 0; top: 0;
+                width: 100%;
+                /* O estilo da sua etiqueta. Exemplo: */
+                font-size: 10pt; 
+                line-height: 1.2;
+                white-space: pre-wrap; /* Mantém quebras de linha e espaços */
+                padding: 5mm;
+                /* Você pode querer definir um tamanho fixo para a etiqueta aqui, se for o caso. */
+            }
+        }
