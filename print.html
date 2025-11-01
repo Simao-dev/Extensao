@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pré-visualização de Impressão</title>
+    <style>
+      /* [SEU CSS AQUI, INCLUINDO O @media print] */
+
+      /* O ESTILO DO LOADING (QUE ESTÁ APARECENDO) */
+      #loading-message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: sans-serif;
+        color: #555;
+      }
+
+      /* O ESTILO DO CONTEÚDO OCULTO */
+      #print-content {
+        /* Garante que o conteúdo real só apareça na impressão */
+        display: none;
+      }
+
+      /* ONDE A MAGIA DA IMPRESSÃO ACONTECE */
+      @media print {
+        body {
+          margin: 0;
+          padding: 0;
+        }
+        #loading-message {
+          display: none; /* Esconde a mensagem de loading durante a impressão */
+        }
+        #print-content {
+          display: block; /* Revela o conteúdo que será impresso */
+        }
+        #print-content img {
+          width: 100%;
+          /* Restante dos estilos para imagem */
+        }
+        /* Adicione aqui qualquer estilo para o HTML da etiqueta */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loading-message">
+      <img
+        src="loading-icon.gif"
+        alt="Carregando..."
+        style="vertical-align: middle"
+      />
+      Carregando seleção para impressão...
+    </div>
+
+    <div id="print-content"></div>
+
+    <script src="print.js"></script>
+  </body>
+</html>
