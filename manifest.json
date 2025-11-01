@@ -1,27 +1,17 @@
 {
   "manifest_version": 3,
-  "name": "Ferramentas de Captura e Impressão",
+  "name": "Impressão de Seleção",
   "version": "1.0",
-  "description": "Extensão com botões para Capturar Tela e Imprimir Etiqueta.",
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": "icon.png"
-  },
+  "description": "Seleciona uma área da tela e a imprime.",
   "permissions": [
-    "activeTab",
-    "scripting",
-    "storage" 
+    "activeTab", 
+    "scripting" 
   ],
-  "content_scripts": [ 
-    {
-      "matches": ["<all_urls>"],
-      "js": ["selector.js"]
-    }
-  ],
-  "web_accessible_resources": [
-    {
-      "resources": ["selector.html"], 
-      "matches": ["<all_urls>"]
-    }
-  ]
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_icon": "icon.png",
+    "default_title": "Imprimir Seleção"
+  }
 }
