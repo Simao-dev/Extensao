@@ -1,8 +1,8 @@
-// Ficheiro: background.js - VERSÃO FINAL E SIMPLIFICADA (Retorna a imagem)
+// Ficheiro: background.js - VERSÃO FINAL ESTÁVEL PARA MV3
 
 /**
  * Ouve mensagens vindas de outros scripts.
- * Usa o padrão assíncrono para retornar o DataURL da imagem recortada.
+ * Usa o padrão de retornar 'true' para indicar que a resposta (sendResponse) virá de forma assíncrona.
  */
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     
@@ -21,11 +21,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 console.warn("Extensão bloqueada em páginas internas do Chrome.");
             }
         });
+        // Retorna false para operações síncronas.
         return false; 
     }
 
     // ==========================================================
     // AÇÃO 3: RECEBE COORDENADAS E FAZER O RECORTE (do content-script.js)
+    // ESTA AÇÃO GERA A IMAGEM E RESPONDE DE VOLTA AO content-script.js
     // ==========================================================
     if (request.type === "CROP_AREA") {
         
@@ -43,15 +45,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         const finalW = w * pixelRatio;
         const finalH = h * pixelRatio;
 
-        // Retorna uma Promessa. A RESPOSTA (sendResponse) é o DataURL.
-        return new Promise((resolve, reject) => {
+        // Inicia o Processo Assíncrono e usa Promises para garantir o sendResponse
+        new Promise((resolve, reject) => {
             
+            // 3. Tira um "print" da aba visível.
             chrome.tabs.captureVisibleTab(null, { format: "png" }, (dataUrl) => {
                 if (chrome.runtime.lastError || !dataUrl) {
-                    reject(new Error("Falha na captura"));
+                    reject(new Error("Falha na captura: " + chrome.runtime.lastError?.message || "Data URL Vazia."));
                     return;
                 }
                 
+                // 4. Chama a função para recortar a imagem.
                 cropImage(dataUrl, finalX, finalY, finalW, finalH)
                     .then(croppedDataUrl => {
                         if (!croppedDataUrl) {
@@ -74,66 +78,73 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             sendResponse({ status: 'ERROR', message: error.message });
         });
         
-        // Retorna true APENAS para esta mensagem que é assíncrona
+        // Retorna true APENAS para esta mensagem que é assíncrona.
+        // O canal de comunicação será fechado após o sendResponse.
         return true; 
     } 
+
+    // ==========================================================
+    // AÇÃO 4: ABRIR ABA DE IMPRESSÃO (do content-script.js)
+    // ESTA AÇÃO É DISPARADA APÓS O content-script RECEBER A IMAGEM.
+    // ==========================================================
+    if (request.action === "OPEN_PRINT_TAB") {
+        
+        // Abre a nova aba (print.html)
+        chrome.tabs.create({ url: "print.html" }, (newTab) => {
+            const image = request.image;
+            
+            // Envia a imagem recortada após a aba carregar
+            chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
+                if (tabId === newTab.id && info.status === "complete") {
+                    chrome.tabs.onUpdated.removeListener(listener);
+
+                    chrome.tabs.sendMessage(newTab.id, {
+                        type: "PRINT_IMAGE",
+                        image: image, // Usa a imagem enviada pelo content-script
+                    });
+                }
+            });
+        });
+        return false;
+    }
     
     return false;
 });
 
 /**
- * Função Auxiliar: Recorta a Imagem (Versão correta para Service Worker)
- * Permanece inalterada da última correção.
+ * Função Auxiliar: Recorta a Imagem.
+ * Esta versão é robusta para o Service Worker (MV3) e usa APIs corretas (fetch, createImageBitmap).
  */
 async function cropImage(dataUrl, cropX, cropY, cropWidth, cropHeight) {
     if (cropWidth <= 0 || cropHeight <= 0) {
         throw new Error("Dimensões de recorte inválidas.");
     }
     
+    // 1. Converte o DataURL (string) em Blob
     const response = await fetch(dataUrl);
     const blob = await response.blob();
+    
+    // 2. Cria o ImageBitmap a partir do Blob (Método correto para Service Workers)
     const imageBitmap = await createImageBitmap(blob);
 
+    // 3. Cria e configura o OffscreenCanvas
     const canvas = new OffscreenCanvas(cropWidth, cropHeight);
     const ctx = canvas.getContext("2d");
 
+    // 4. Desenha apenas a área selecionada no novo Canvas
     ctx.drawImage(
         imageBitmap,
         cropX, cropY, cropWidth, cropHeight, 
         0, 0, cropWidth, cropHeight 
     );
 
+    // 5. Converte o canvas recortado em Blob
     const croppedBlob = await canvas.convertToBlob({ type: "image/png" });
 
+    // 6. Retorna a DataURL.
     return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result);
         reader.readAsDataURL(croppedBlob);
     });
-}
-
-// NOVO BLOCO DENTRO DO chrome.runtime.onMessage.addListener:
-
-// ==========================================================
-// AÇÃO 4: ABRIR ABA DE IMPRESSÃO (do content-script.js)
-// ==========================================================
-if (request.action === "OPEN_PRINT_TAB") {
-    
-    // Abre a nova aba (print.html)
-    chrome.tabs.create({ url: "print.html" }, (newTab) => {
-        const image = request.image;
-        
-        // Envia a imagem recortada após a aba carregar
-        chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
-            if (tabId === newTab.id && info.status === "complete") {
-                chrome.tabs.onUpdated.removeListener(listener);
-
-                chrome.tabs.sendMessage(newTab.id, {
-                    type: "PRINT_IMAGE",
-                    image: image, // Usa a imagem enviada pelo content-script
-                });
-            }
-        });
-    });
-    return false;
 }
