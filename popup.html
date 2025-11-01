@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
-    integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA=="
-    crossorigin="anonymous"></script>
+    
+    <script src='lib/jquery.min.js'></script> 
+    <script src="lib/qrcode.min.js"></script>
+    
     <link rel="stylesheet" href="qrcode.css">
     <title>Menu</title>
 </head>
@@ -25,11 +25,7 @@
             <button class="generate-qr-code">Gerar QRCODE</button>
         </div>
 
-        <div id="qrcode" style="margin-top: 15px;margin-left: auto; margin-right: auto"></div>
-    </div>
-
-    <div id="qrcode">
-
+        <div id="qrcode-container" style="margin-top: 15px;margin-left: auto; margin-right: auto"></div>
     </div>
 
     <script src="popup.js"></script>
