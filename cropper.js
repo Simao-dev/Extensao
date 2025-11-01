@@ -1,4 +1,4 @@
-// Função global chamada do popup.js para recortar e exibir a imagem
+// Função global chamada do popup.js para recortar e imprimir a imagem
 function cropAndOpen(imageUrl, x, y, width, height) {
   const canvas = document.getElementById('canvasCrop');
   const ctx = canvas.getContext('2d');
@@ -22,8 +22,28 @@ function cropAndOpen(imageUrl, x, y, width, height) {
     // Converte o canvas recortado em uma nova URL de dados
     const croppedUrl = canvas.toDataURL('image/png');
 
-    // Abre a imagem recortada em uma nova aba
-    chrome.tabs.create({ url: croppedUrl });
+    // 1. Abre a imagem recortada em uma nova aba (temporária)
+    chrome.tabs.create({ url: croppedUrl }, (newTab) => {
+        // 2. Após a nova aba ser criada, injetamos o comando de impressão
+        if (chrome.runtime.lastError) {
+             console.error("Erro ao criar a aba para impressão:", chrome.runtime.lastError.message);
+             return;
+        }
+
+        // A URL da imagem Base64 é segura para injeção de script
+        chrome.scripting.executeScript({
+            target: { tabId: newTab.id },
+            func: () => {
+                // Remove a margem do body para a impressão ficar mais limpa
+                document.body.style.margin = '0'; 
+                // Chama o diálogo de impressão
+                window.print();
+                
+                // Opcional: Você pode querer fechar a aba automaticamente
+                // setTimeout(window.close, 100); 
+            }
+        });
+    });
   };
 
   image.src = imageUrl;
