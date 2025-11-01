@@ -13,5 +13,8 @@
     },
     "default_title": "Menu da Extensão",
     "default_popup": "popup.html"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' https://code.jquery.com https://cdnjs.cloudflare.com; object-src 'self';"
   }
 }
