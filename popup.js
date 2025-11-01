@@ -10,62 +10,70 @@ async function injectSelector(tabId) {
 document.addEventListener('DOMContentLoaded', () => {
   // Lógica para o botão CAPTURAR TELA (com seleção de área)
   document.getElementById('captureScreenButton').addEventListener('click', async () => {
-    // Obtém a aba ativa
+    // 1. Obtém a aba ativa
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-    // 1. INJETA O SCRIPT DE SELEÇÃO
-    // Este script (selector.js) cuidará da interface de arrastar e selecionar
+    // 2. VERIFICAÇÃO CRÍTICA DA URL
+    const isChromeRestricted = tab.url.startsWith('chrome://') || tab.url.startsWith('chrome-extension://');
+    
+    if (isChromeRestricted) {
+        alert("Erro: Não é possível capturar a tela em páginas internas do Chrome (como 'chrome://extensions' ou Nova Aba). Por favor, navegue para uma página web normal.");
+        window.close();
+        return;
+    }
+    
+    // 3. INJETA O SCRIPT DE SELEÇÃO
     injectSelector(tab.id);
 
-    // 2. Fecha o pop-up para que o usuário possa interagir com a tela subjacente
+    // 4. Fecha o pop-up para que o usuário possa interagir com a tela subjacente
     window.close();
   });
 
   // Lógica para o botão IMPRIMIR ETIQUETA
   document.getElementById('printLabelButton').addEventListener('click', async () => {
-    // Obtém a aba ativa
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+    // Verifica restrição também para a impressão
+    const isChromeRestricted = tab.url.startsWith('chrome://') || tab.url.startsWith('chrome-extension://');
+
+    if (isChromeRestricted) {
+        alert("Erro: Não é possível imprimir páginas internas do Chrome. Por favor, navegue para uma página web normal.");
+        window.close();
+        return;
+    }
 
     // Injeta a função de impressão na aba
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      func: printCurrentPage // Chama a função de impressão nativa
+      func: printCurrentPage
     });
   });
 });
 
 // Função a ser injetada na página web para imprimir
 function printCurrentPage() {
-  // Esta função é executada no contexto da página
   window.print();
 }
 
 
-// 3. ESCUTA A MENSAGEM DO SCRIPT DE CONTEÚDO (selector.js)
-// O selector.js envia uma mensagem quando a área é selecionada
+// ESCUTA A MENSAGEM DO SCRIPT DE CONTEÚDO (selector.js)
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
-  // Verifica se a mensagem é sobre a área selecionada
   if (request.action === "areaSelected" && request.coords) {
     const { x, y, width, height } = request.coords;
 
-    // Obtém a janela (windowId) para tirar a foto
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     
-    // 4. CAPTURA A TELA VISÍVEL COMPLETA
-    // É necessário capturar a tela inteira primeiro
+    // CAPTURA A TELA VISÍVEL COMPLETA
     chrome.tabs.captureVisibleTab(tab.windowId, { format: "png" }, (screenshotUrl) => {
       if (chrome.runtime.lastError) {
         console.error("Erro na captura:", chrome.runtime.lastError.message);
         return;
       }
       
-      // 5. ENVIA A URL DA CAPTURA E AS COORDENADAS PARA O CROPPING
-      // A função cropAndOpen está definida no cropper.js
+      // ENVIA A URL DA CAPTURA E AS COORDENADAS PARA O CROPPING (no cropper.js)
       cropAndOpen(screenshotUrl, x, y, width, height); 
     });
 
-    // É uma boa prática retornar true para indicar que você vai enviar uma resposta de forma assíncrona,
-    // embora não seja estritamente necessário neste caso específico, ajuda a evitar warnings.
     return true; 
   }
 });
