@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Criar Etiqueta</title>
+    <style>
+        body { padding: 20px; font-family: sans-serif; }
+        textarea { width: 100%; height: 150px; box-sizing: border-box; margin-bottom: 15px; }
+        button { padding: 10px 20px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+        
+        /* ESTILOS PARA IMPRESSÃO (O CONTEÚDO DA ETIQUETA) */
+        @media print {
+            body { 
+                margin: 0; 
+                padding: 0; 
+                /* Esconde tudo que não é o conteúdo da etiqueta */
+                visibility: hidden; 
+            }
+            #label-content { 
+                visibility: visible; 
+                position: absolute; 
+                left: 0; top: 0;
+                width: 100%;
+                /* O estilo da sua etiqueta. Exemplo: */
+                font-size: 10pt; 
+                line-height: 1.2;
+                white-space: pre-wrap; /* Mantém quebras de linha e espaços */
+                padding: 5mm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Digite o Conteúdo da Etiqueta</h2>
+    <textarea id="label-text" placeholder="Digite aqui o texto que será impresso..."></textarea>
+    <button id="print-label-btn">🖨️ Imprimir Etiqueta</button>
+
+    <div id="label-content"></div>
+
+    <script>
+        document.getElementById('print-label-btn').addEventListener('click', () => {
+            const text = document.getElementById('label-text').value;
+            const contentDiv = document.getElementById('label-content');
+            
+            // Coloca o texto digitado na div de impressão
+            contentDiv.textContent = text; 
+            
+            // Chama a janela de impressão
+            window.print();
+        });
+    </script>
+</body>
+</html>
