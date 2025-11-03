@@ -1,10 +1,8 @@
-// Ficheiro: print.js - VERSÃO CORRIGIDA E COMPLETA
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   const img = document.getElementById('printImage');
   const labelDiv = document.getElementById('label-content'); 
 
-  // Lógica 1: Imprimir Imagem (Seleção de Tela)
+  //1: Imprimir Imagem (Seleção de Tela)
   if (request.type === 'PRINT_IMAGE' && request.image) {
     // 1. Configura a exibição na tela
     if (labelDiv) labelDiv.style.display = 'none'; 
@@ -13,9 +11,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     // 2. Define o source
     img.src = request.image;
 
-    // 3. CORREÇÃO CRÍTICA: Garante que a imagem seja visível na impressão, 
-    // forçando a visibilidade para 'visible' para sobrescrever o 
-    // 'visibility: hidden' que está no 'body' do label_input.css.
+    // 3.Garante que a imagem seja visível na impressão, 
     img.style.visibility = 'visible'; 
     
     // 4. Quando a imagem terminar de carregar, chame a impressão
@@ -24,11 +20,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     };
   }
 
-  // Lógica 2: Imprimir Etiqueta (Texto Formatado)
+  //2: Imprimir Etiqueta (Texto Formatado)
   else if (request.type === 'PRINT_LABEL' && request.content) {
     // 1. Configura a exibição na tela
     img.style.display = 'none'; 
-    // Opcional: Define a visibilidade da imagem para 'hidden' para o caso de impressão
     img.style.visibility = 'hidden'; 
     
     if (labelDiv) {
@@ -37,7 +32,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
     
     // 2. Chama a impressão para o conteúdo de texto
-    // O CSS em label_input.css garante que a etiqueta (#label-content) será visível.
     window.print();
   }
 });

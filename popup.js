@@ -1,8 +1,6 @@
-// Ficheiro: popup.js - VERSÃO OTIMIZADA
-
 document.addEventListener('DOMContentLoaded', function() {
     
-    // === Elementos ===
+    //  Elementos
     const showQrButton = document.getElementById('btn-show-qr-generator');
     const qrSection = document.getElementById('qr-generator-section');
     const labelSection = document.getElementById('label-input-section');
@@ -34,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         window.close(); 
     }
 
-    // === 1. Lógica do Gerador de QR Code (Alternar Visibilidade) ===
+    // 1. Lógica do Gerador de QR Code (Alternar Visibilidade)
     if (showQrButton && qrSection) {
         showQrButton.addEventListener('click', function() {
             toggleSection(qrSection);
@@ -44,12 +42,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // === 2. Lógica para o botão "Imprimir Seleção (Print)" ===
+    // 2. Lógica para o botão "Imprimir Seleção (Print)" 
     document.getElementById('btn-print-selection').addEventListener('click', () => {
         handleExtensionAction("START_PRINT_SELECTION");
     });
     
-    // === 3. Lógica para o botão "Criar Etiqueta (Digitada)" (Alterna formulário) ===
+    // 3. Lógica para o botão "Criar Etiqueta (Digitada)" (Alterna formulário) 
     document.getElementById('btn-label-input').addEventListener('click', () => {
         if (labelSection) {
             toggleSection(labelSection);
@@ -59,9 +57,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // ==========================================================
-    // === 4. Lógica de Impressão de Etiqueta (Envia para o Background) ===
-    // ==========================================================
+    // 4. Lógica de Impressão de Etiqueta (Envia para o Background)
+
     if (printLabelPopupBtn) {
         printLabelPopupBtn.addEventListener('click', () => {
             // 1. Captura os valores dos inputs
