@@ -1,17 +1,10 @@
-// Ficheiro: content-script.js
 
-/**
- * Usamos uma IIFE (Immediately Invoked Function Expression) para encapsular
- * nosso script, evitando conflitos com o JavaScript da página original.
- */
 (() => {
-  // 1. VERIFICAÇÃO: Se o script já foi injetado, não faça nada.
-  // Isso evita múltiplas camadas se o usuário clicar no ícone várias vezes.
+  // VERIFICAÇÃO: Se o script já foi injetado
   if (document.getElementById('ss-print-overlay')) {
     return;
   }
 
-  // --- 2. CRIAÇÃO DOS ELEMENTOS VISUAIS ---
 
   // O overlay semi-transparente que cobre a tela inteira
   const overlay = document.createElement('div');
@@ -40,7 +33,7 @@
   `;
   document.body.appendChild(selectionBox);
 
-  // --- 3. LÓGICA DE SELEÇÃO (MOUSE) ---
+  // LÓGICA DE SELEÇÃO
 
   let isDrawing = false;
   let startX = 0;
@@ -62,7 +55,7 @@
     e.stopPropagation();
 
     isDrawing = true;
-    startX = e.clientX; // Usamos clientX/Y para coordenadas relativas à janela
+    startX = e.clientX; 
     startY = e.clientY;
 
     // Posiciona a caixa de seleção e a torna visível
@@ -88,7 +81,6 @@
     const currentY = e.clientY;
 
     // Calcula a posição (left, top) e o tamanho (width, height)
-    // Math.min garante que funcione mesmo se o usuário arrastar para cima/esquerda
     const left = Math.min(startX, currentX);
     const top = Math.min(startY, currentY);
     const width = Math.abs(currentX - startX);
@@ -140,7 +132,7 @@
     }
   };
 
-  // --- 4. INICIALIZAÇÃO ---
+  //INICIALIZAÇÃO 
 
   // Adiciona o ouvinte inicial de "mousedown" ao overlay
   overlay.addEventListener('mousedown', onMouseDown);

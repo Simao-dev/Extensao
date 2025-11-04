@@ -1,175 +1,445 @@
 body {
-    width: 300px;
-    padding: 15px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f7f7f7;
+  width: 300px;
+  padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7f7f7; 
+  color: #333; 
+  transition: background-color 0.4s, color 0.4s; 
 }
 
 h3 {
-    font-size: 1.1em;
-    color: #333;
-    margin-top: 0;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 5px;
+  font-size: 1.1em;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+  transition: color 0.4s, border-bottom-color 0.4s;
 }
 
 button {
-    padding: 12px 15px; 
-    margin-bottom: 12px; 
-    border: none; 
-    cursor: pointer; 
-    width: 100%;
-    border-radius: 8px; 
-    font-size: 1.0em;
-    font-weight: 600;
-    text-align: left;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    
+  padding: 12px 15px;
+  margin-bottom: 12px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: 600;
+  text-align: left;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+button i {
+  margin-right: 3px;
 }
 
 button:hover {
-   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); 
-    transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
 .print-btn {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.print-btn:hover {
-    background-color: #e0e0e0;
+  background-color: #4caf50;
+  color: white;
 }
 
 .qr-code-generator {
-    text-align: center;
-    display: none; 
-    margin-top: 10%; 
-    text-align: center; 
+  display: none;
+  text-align: center;
 }
 
 .qr-code-generator * {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 #btn-print-qrcode {
-    display: none;
+  display: none;
 }
 
 #qrcode-container {
-    width: 128px; 
-    margin-left: auto; 
-    margin-right: auto;
-    margin-bottom: 10px;
+  width: 128px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
 }
 
-#qrcode-container canvas, 
-#qrcode-container img, 
+#qrcode-container canvas,
+#qrcode-container img,
 #qrcode-container div {
-    display: block;
-    margin: 0 auto;
+  display: block;
+  margin: 0 auto;
 }
 
-
-#qrcode-container a { 
-    font-size: 0.8em;
+#qrcode-container a {
+  font-size: 0.8em;
 }
 
-#label-content{
-    margin-top: 20px; 
-    padding: 10px;
-    display: inline-block; 
-    border: 1px solid #eee;
-    border-radius: 4px;
+.main-qrcode {
+  text-align: start;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  background-color: #fff; 
+  transition: background-color 0.4s, border-color 0.4s;
 }
 
+.main-qrcode h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #555;
+  border-bottom: 1px dotted #eee;
+  padding-bottom: 5px;
+  transition: color 0.4s, border-bottom-color 0.4s;
+}
+
+#label-content {
+  margin-top: 20px;
+  padding: 10px;
+  display: inline-block;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
 
 #label-content canvas {
-    display: block;
-    margin: 0 auto;
+  display: block;
+  margin: 0 auto;
 }
 .label-input-section {
-    margin-top: 20px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fff;
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff; 
+  transition: background-color 0.4s, border-color 0.4s;
 }
 .label-input-section h4 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    color: #555;
-    font-size: 1em;
-    font-weight: 600;
-    border-bottom: 1px dotted #eee;
-    padding-bottom: 5px;
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #555;
+  font-size: 1em;
+  font-weight: 600;
+  border-bottom: 1px dotted #eee;
+  padding-bottom: 5px;
+  transition: color 0.4s, border-bottom-color 0.4s;
 }
 
-input[type="text"], 
-input[type="number"] { 
-    width: 100%; 
-    padding: 10px; 
-    box-sizing: border-box; 
-    margin-bottom: 10px; 
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 0.9em;
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9em;
+  background-color: white;
+  color: #333;
+  transition: background-color 0.4s, color 0.4s, border-color 0.4s;
 }
 
 .input-action-btn {
-    padding: 10px 20px; 
-    background-color: #007bff; 
-    color: white; 
-    border: none; 
-    cursor: pointer; 
-    width: 100%;
-    border-radius: 4px;
-    font-weight: 600;
-    margin-top: 5px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-top: 5px;
+  transition: background-color 0.4s, color 0.4s;
 }
 
 .input-action-btn i.fas {
-    margin-right: 8px;
+  margin-right: 8px;
 }
 .qr-url,
 .qr-size {
-    padding: 0.5em;
-    border: 1px solid #ddd;
-    border-radius: 2px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+  padding: 0.5em;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background-color: white;
+  color: #333;
+  transition: background-color 0.4s, color 0.4s, border-color 0.4s;
 }
 
 .qr-url {
-    width: 100%;
-    margin-bottom: 10px;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 .qr-size {
-    width: 45%;
+  width: 45%;
 }
 
 .generate-qr-code {
-    display: block;
-    width: 100%;
-    margin-top: 10px;
-    padding: 10px 20px;
-    font-size: 14px;
-    border: none;
-    cursor: pointer;
-    background-color: #007bff;
-    box-shadow: 0px 2px 6px black;
-    color: #fff;
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  background-color: #007bff;
+  color: #fff;
+  transition: background-color 0.4s, color 0.4s;
 }
 p {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #333;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #333;
+  transition: color 0.4s;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.Etiqueta-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.4s, color 0.4s;
+}
+
+.etiqueta-qrcode {
+  padding: 10px 20px;
+  background-color: #4b185a;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.4s, color 0.4s;
+}
+
+
+/* ESTILOS DARK MODE */
+
+
+body.dark-mode {
+    width: 300px;
+    padding: 20px;
+    background-color: #1f2937; 
+    color: #f9fafb; 
+}
+
+body.dark-mode h3,
+body.dark-mode h4 {
+    color: #e5e7eb; 
+}
+
+body.dark-mode p {
+    color: #d1d5db; 
+}
+
+body.dark-mode .main-qrcode,
+body.dark-mode .label-input-section {
+    background-color: #374151; 
+    border-color: #4b5563;
+}
+
+body.dark-mode input[type="text"],
+body.dark-mode input[type="number"],
+body.dark-mode .qr-url,
+body.dark-mode .qr-size {
+    background-color: #4b5563; 
+    color: #f9fafb;
+    border-color: #6b7280;
+}
+
+
+body.dark-mode .input-action-btn,
+body.dark-mode .generate-qr-code,
+body.dark-mode .Etiqueta-btn {
+    background-color: #3b82f6; 
+    color: #1f2937;
+}
+
+body.dark-mode .print-btn {
+    background-color: #10b981;
+    color: #1f2937;
+}
+
+body.dark-mode .etiqueta-qrcode {
+    background-color: #8b5cf6; 
+    color: #1f2937;
+}
+
+
+
+/* ESTILOS DO TOGGLE SWITCH  */
+
+
+
+.toggle-container {
+    top: 20px;
+    right: 20px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    background-color: #556c89; 
+    border-radius: 34px;
+    cursor: pointer;
+    transition: background-color 0.4s;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.slider {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    z-index: 2;
+}
+
+
+
+#custom-switch:checked + .switch .slider::after {
+    color: #f0f8ff; 
+}
+
+/* (Tema Claro / Checked) */
+.switch::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background-color: #ffd700; 
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+    z-index: 1;
+    box-shadow: 0 0 5px #ffd700, 0 0 10px rgba(255, 234, 0, 0.5);
+}
+
+/*(Tema Escuro / Unchecked)*/
+.switch::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 25%;
+    transform: translate(50%, -50%);
+    width: 18px;
+    height: 18px;
+    background-color: #f0f8ff;
+    border-radius: 50%;
+    opacity: 1;
+    transition: opacity 0.4s ease-in-out;
+    z-index: 1;
+    box-shadow: inset 3px -3px 0 0 #c0c0c0; 
+}
+
+
+#custom-switch:checked + .switch {
+    background-color: #87ceeb; 
+}
+
+
+#custom-switch:checked + .switch .slider {
+    transform: translateX(26px);
+}
+
+
+#custom-switch:checked + .switch::before {
+    opacity: 1;
+}
+
+
+#custom-switch:checked + .switch::after {
+    opacity: 0;
+}
+
+
+@media print {
+    
+    /* Oculta tudo na página, exceto o que é explicitamente visível */
+    body {
+        margin: 0;
+        padding: 0;
+        visibility: hidden; 
+        
+        /* Anula qualquer centralização vertical indesejada do navegador/framework */
+        display: block !important; 
+        min-height: auto !important;
+        height: auto !important;
+    }
+
+    /* Remove margens da página para garantir o topo (Y) */
+    @page {
+        margin-top: 0;
+        margin-bottom: 0;
+
+    }
+
+    /* Estilo para o Container do QR Code  */
+    #label-content {
+        visibility: visible !important;
+        
+        /* Posiciona no TOPO (Y) */
+        position: absolute;
+        top: 0;
+        
+        /* Centraliza HORIZONTALMENTE (X) */
+        left: 50%;
+        transform: translateX(-50%); 
+        
+        /* Garante que o container se ajuste ao conteúdo (QR Code) */
+        width: auto;
+        max-width: fit-content; 
+        
+        /* Estilos de conteúdo (etiqueta) */
+        font-size: 10pt;
+        line-height: 1.2;
+        white-space: pre-wrap;
+        padding: 5mm; 
+    }
+    
+    /* Garante que a Imagem do QR Code fique centralizado dentro do #label-content */
+    #label-content canvas, 
+    #label-content img {
+        display: block;
+        margin: 0 auto;
+    }
+    
+    /* Regras do #printImage (se usado para alguma outra finalidade de impressão) */
+    #printImage {
+        width: 100%;
+        max-width: 100%;
+        height: auto; 
+        box-shadow: none;
+    }
 }

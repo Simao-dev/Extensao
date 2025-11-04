@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Impressão de Seleção",
-  "version": "1.2",
-  "description": "Seleciona uma área da tela e a imprime.",
+  "version": "1.5",
+  "description": "Tire prints da sua tela direto do navegador, Gere QRcodes ou crie cartões.",
   "permissions": ["activeTab", "scripting"],
   "background": {
     "service_worker": "background.js"

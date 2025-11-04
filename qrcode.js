@@ -61,8 +61,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // CSS para centralizar
                     printWindow.document.write('<style>');
-                    printWindow.document.write('body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }'); 
-                    printWindow.document.write('img { max-width: 100%; max-height: 100%; }');
+                    printWindow.document.write('body { display: block; margin: 0; padding: 0; }'); 
+                    printWindow.document.write('img { display: block; margin: 0 auto; padding-top: 5mm; }');
                     printWindow.document.write('</style>');
                     
                     // Adiciona a imagem usando a Data URL

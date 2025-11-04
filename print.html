@@ -4,52 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Imprimir</title>
-    <link rel="stylesheet" href="label_input.css"> 
+    <link rel="stylesheet" href="qrcode.css"> 
     <style>
-      /* Estilos para a visualização na tela (antes da impressão). */
-      body {
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background-color: #f0f0f0;
-      }
 
-      /* Estilo para a imagem na tela */
-      #printImage {
-        max-width: 90vw;
-        max-height: 90vh;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-      }
-      
-      /* O #label-content será estilizado pelo label_input.css e ficará visível aqui. */
-      #label-content {
-          display: none; /* Esconde na visualização normal da página, só o JS vai exibir*/
-      }
-
-      /* ESTA É A PARTE MAIS IMPORTANTE: Como a página deve se parecer NO PAPEL. */
-      @media print {
-        /* Remove todos os fundos e sombras */
-        body {
-          background-color: #fff;
-          display: block; 
-          margin: 0;
-          padding: 0;
-        }
-
-        /* Faz a imagem ocupar 100% da largura do papel, */
-        #printImage {
-          width: 100%;
-          max-width: 100%;
-          height: auto;
-          box-shadow: none;
-          /* O visibility é forçado para 'visible' no print.js para evitar o CSS do body */
-        }
-        
-        /* O estilo para #label-content é definido em label_input.css e é aplicado aqui */
-      }
     </style>
   </head>
   <body>

@@ -1,53 +1,94 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <script src='lib/jquery.min.js'></script> 
+
+    <script src="lib/jquery.min.js"></script>
     <script src="lib/qrcode.min.js"></script>
-    
-    <link rel="stylesheet" href="qrcode.css">
-    <link rel="stylesheet" href="label_input.css"> <title>Menu</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-</head>
-<body>
-    <h3>Escolha uma Opção</h3>
-    
-    <button id="btn-print-selection" class="print-btn"><i class="fas fa-camera"></i>Imprimir Seleção</button>
-    
-    <button id="btn-label-input" class="Etiqueta-btn"><i class="fas fa-file-alt"></i>Criar Etiqueta </button>
-    
-    <button id="btn-show-qr-generator" class="etiqueta-qrcode"><i class="fas fa-qrcode"></i> Gerar QR Code </button>
+    <link rel="stylesheet" href="qrcode.css" />
+    <link rel="stylesheet" href="temas/temas.css" />
+    <title>Menu</title>
 
-    <div id="label-input-section" class="label-input-section" style="display:none; margin-top: 15px;">
-        <h4>Dados da Etiqueta</h4>
-        <input type="text" id="client-name" placeholder="Nome do Cliente" required />
-        <input type="text" id="order-number" placeholder="Número do Pedido" required />
-        <button id="print-label-popup-btn" class="input-action-btn"><i class="fas fa-print"></i>  Imprimir Etiqueta</button>
-    </div>
-    <div id="qr-generator-section" class="qr-code-generator" style="margin-top:10%; left: 10%; justify-content:center; text-align:center;">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="inicio">
         <div>
-            <h4>Gerador QR Code</h4>
-            <input type="text" class="qr-url" placeholder="URL ou texto">
-            <input type="number" class="qr-size" value="128" min="20" max="500">
-
-            <button class="generate-qr-code"><i class="fas fa-barcode"></i> Gerar QRCODE</button>
+            <h3>Escolha uma Opção</h3>
         </div>
-
-        <div id="qrcode-container" style="margin-top: 15px;"></div>
-        
-        <button id="btn-print-qrcode" class="print-btn" style="margin-top: 10px;"><i class="fas fa-print"></i> Imprimir QR Code</button>
-    
-        <div id="label-content" style="display:none;"></div> 
+        <div class="toggle-container">
+          <input type="checkbox" id="custom-switch" hidden />
+          <label for="custom-switch" class="switch">
+            <span class="slider"></span>
+          </label>
+        </div>
     </div>
 
-    
-    
+    <button id="btn-print-selection" class="print-btn">
+      <i class="fas fa-camera"></i>Imprimir Seleção
+    </button>
+
+    <button id="btn-label-input" class="Etiqueta-btn">
+      <i class="fas fa-file-alt"></i>Criar Etiqueta
+    </button>
+
+    <button id="btn-show-qr-generator" class="etiqueta-qrcode">
+      <i class="fas fa-qrcode"></i>Gerar QR Code
+    </button>
+
+    <div
+      id="label-input-section"
+      class="label-input-section"
+      style="display: none; margin-top: 15px"
+    >
+      <h4>Dados da Etiqueta</h4>
+      <input
+        type="text"
+        id="client-name"
+        placeholder="Nome do Cliente"
+        required
+      />
+      <input
+        type="text"
+        id="order-number"
+        placeholder="Número do Pedido"
+        required
+      />
+      <button id="print-label-popup-btn" class="input-action-btn">
+        <i class="fas fa-print"></i> Imprimir Etiqueta
+      </button>
+    </div>
+    <div id="qr-generator-section" class="qr-code-generator">
+      <div class="main-qrcode">
+        <h4>Gerador QR Code</h4>
+        <input type="text" class="qr-url" placeholder="URL ou texto" />
+        <p>Tamanho de 20 a 500px</p>
+        <input type="number" class="qr-size" value="128" min="20" max="500" />
+
+        <button class="generate-qr-code">
+          <i class="fas fa-qrcode"></i>Gerar QRCODE
+        </button>
+      </div>
+
+      <div id="qrcode-container" style="margin-top: 15px"></div>
+
+      <button id="btn-print-qrcode" class="print-btn" style="margin-top: 10px">
+        <i class="fas fa-print"></i> Imprimir QR Code
+      </button>
+
+      <div id="label-content" style="display: none"></div>
+    </div>
+
     <script src="popup.js"></script>
     <script src="qrcode.js"></script>
-    <p>Desenvolvido por S.I Sistemas</p>
-</body>
+    <script src="temas/tema.js"></script>
+    <a href="https://github.com/simao-dev" target="_blank">
+      <p>Desenvolvido por S.I Sistemas</p>
+    </a>
+  </body>
 </html>
