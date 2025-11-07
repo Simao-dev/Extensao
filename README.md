@@ -81,3 +81,12 @@ A imagem é capturada, recortada no *background* da extensão e imediatamente ex
 ### ❓ Tentei ler um QR Code, mas recebi a mensagem "Nenhum QR Code válido encontrado".
 
 * Verifique se a seleção que você desenhou **englobe o código QR por completo** e contenha o mínimo possível de elementos de fundo.
+
+## 📧 Contato e Suporte
+
+Tem alguma dúvida, encontrou um bug ou quer enviar uma sugestão de recurso? Ficarei feliz em ouvir você!
+
+| Canal | Link/Informação |
+| :--- | :--- |
+| **E-mail de Contato** | `[pedrosimaocontato@gmail.com]` |
+| **Linkedin** | `[https://www.linkedin.com/in/pedro-sim%C3%A3o-788918271/]` |
