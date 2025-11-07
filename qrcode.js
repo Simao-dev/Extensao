@@ -1,58 +1,57 @@
-// Lógica de Geração do QR Code (Listener no botão "Gerar QRCODE")
-document.querySelector('.generate-qr-code').addEventListener('click', function (){
-    var url = document.querySelector('.qr-url').value;
-    var size = parseInt(document.querySelector('.qr-size').value, 10); 
-    
-    // Elementos do HTML
-    var qrcodeContainer = document.querySelector('#qrcode-container'); 
-    var printButton = document.getElementById('btn-print-qrcode'); 
-
-    // Limpa o conteúdo e ESCONDE o botão de impressão antes de tentar gerar
-    qrcodeContainer.innerHTML = ''; 
-    printButton.style.display = 'none';
-
-    if (url && size && !isNaN(size)) {
-        // Geração do QR Code
-        var qrcode = new QRCode(qrcodeContainer, {
-            text: url,
-            width: size,
-            height: size,
-            colorDark: "black",
-            colorLight: "white",
-            correctLevel: QRCode.CorrectLevel.H
-        });
-        
-        // MOSTRA o botão de impressão após a geração bem-sucedida
-        printButton.style.display = 'block';
-
-    } else {
-        // Mensagem de erro caso os campos estejam vazios/inválidos
-        qrcodeContainer.innerHTML = 'Preencha a URL/texto e um tamanho válido.'; 
-    }
-});
-
-
-// Lógica de Impressão (Listener no botão "Imprimir QR Code")
 document.addEventListener('DOMContentLoaded', function() {
-    const printButton = document.getElementById('btn-print-qrcode');
 
+    //Elementos DOM 
+    const generateButton = document.querySelector('.generate-qr-code');
+    const qrcodeContainer = document.querySelector('#qrcode-container'); 
+    const printButton = document.getElementById('btn-print-qrcode'); 
+
+    // Lógica de Geração do QR Code (Listener no botão "Gerar QRCODE")
+    if (generateButton) {
+        generateButton.addEventListener('click', function () {
+            var url = document.querySelector('.qr-url').value;
+            var size = parseInt(document.querySelector('.qr-size').value, 10); 
+            
+            // Limpa o conteúdo e esconde o botão de impressão antes de tentar gerar
+            if (qrcodeContainer) qrcodeContainer.innerHTML = ''; 
+            if (printButton) printButton.style.display = 'none';
+
+            if (url && size && !isNaN(size)) {
+                // Geração do QR Code (garante que o container existe)
+                if (qrcodeContainer && typeof QRCode !== 'undefined') {
+                    var qrcode = new QRCode(qrcodeContainer, {
+                        text: url,
+                        width: size,
+                        height: size,
+                        colorDark: "black",
+                        colorLight: "white",
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                }
+                
+                // MOSTRA o botão de impressão após a geração bem-sucedida
+                if (printButton) printButton.style.display = 'block';
+
+            } else {
+                if (qrcodeContainer) qrcodeContainer.innerHTML = 'Preencha a URL/texto e um tamanho válido.'; 
+            }
+        });
+    }
+
+
+    // Lógica de Impressão (Listener no botão "Imprimir QR Code")
     if (printButton) {
         printButton.addEventListener('click', function() {
-            const qrContainer = document.querySelector('#qrcode-container');
+            let qrcodeImg = qrcodeContainer ? qrcodeContainer.querySelector('canvas') || qrcodeContainer.querySelector('img') : null;
+            
+            if (qrcodeImg) {
+                let dataUrl = qrcodeImg.src; 
 
-            if (qrContainer && qrContainer.firstChild) {
-                const qrElement = qrContainer.firstChild; 
-
-                let dataUrl = '';
-
-                if (qrElement.tagName === 'CANVAS') {
-                    dataUrl = qrElement.toDataURL('image/png');
-                } else if (qrElement.tagName === 'IMG') {
-                    dataUrl = qrElement.src;
+                // Se for um canvas, precisamos converter para Data URL
+                if (qrcodeImg.tagName === 'CANVAS' && typeof qrcodeImg.toDataURL === 'function') {
+                    dataUrl = qrcodeImg.toDataURL('image/png');
                 }
                 
                 if (dataUrl) {
-                    // --- ALTERAÇÃO FEITA AQUI ---
                     // Abre em uma nova guia removendo os parâmetros de altura/largura.
                     const printWindow = window.open('', '_blank'); 
                     
@@ -74,11 +73,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Inicia o diálogo de impressão
                     printWindow.onload = function() {
                         printWindow.print();
-                        // printWindow.close(); 
                     };
                 } else {
                     console.error("Não foi possível extrair a URL da imagem do QR Code.");
                 }
+            } else {
+                 console.warn("Nenhum QR Code gerado para imprimir.");
             }
         });
     }

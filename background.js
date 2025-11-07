@@ -1,104 +1,27 @@
-// Ficheiro: background.js - VERSÃO CORRIGIDA E COMPLETA
+// IMPORTAÇÃO DA BIBLIOTECA jsQR 
+try {
+    importScripts('lib/jsQR.js'); 
+} catch (e) {
+    console.error("Erro ao carregar jsQR.js no Service Worker:", e);
+}
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-
-    // ==========================================================
-    // AÇÃO 1: INICIAR A SELEÇÃO DE TELA (do popup.js) - CÓDIGO COMPLETADO
-    // ==========================================================
-    if (request.action === 'START_PRINT_SELECTION') {
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            const tab = tabs[0];
-            // Verifica se a URL é segura antes de injetar (EVITA ERRO chrome://)
-            if (tab && !tab.url.startsWith('chrome://')) {
-                chrome.scripting.executeScript({
-                    target: { tabId: tab.id },
-                    files: ['content-script.js']
-                });
-            } else {
-                console.warn("Extensão bloqueada em páginas internas do Chrome.");
-            }
-        });
-        return true;
+// FUNÇÃO DE DECODIFICAÇÃO 
+function decodeQRCode(imageData) {
+    if (!self.jsQR) { 
+        return "Erro: jsQR não está definido.";
     }
 
-    // ==========================================================
-    // NOVA AÇÃO: IMPRIMIR ETIQUETA (do popup.js)
-    // ==========================================================
-    if (request.action === 'START_LABEL_PRINT') {
-        const { content } = request.data;
-        
-        // 1. Abre a nova aba (reutilizando print.html)
-        chrome.tabs.create({ url: "print.html" }, (newTab) => {
-            
-            // 2. Envia o conteúdo da etiqueta após a aba carregar completamente
-            chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
-                if (tabId === newTab.id && info.status === 'complete') {
-                    chrome.tabs.onUpdated.removeListener(listener);
+    const code = self.jsQR(
+        imageData.data,
+        imageData.width,
+        imageData.height
+    );
 
-                    // 3. Envia o TEXTO para o print.js
-                    chrome.tabs.sendMessage(newTab.id, {
-                        type: 'PRINT_LABEL', // Novo tipo de mensagem
-                        content: content
-                    });
-                }
-            });
-        });
-        return true;
-    }
+    return code ? code.data : null; 
+}
 
 
-    // ==========================================================
-    // AÇÃO 3: RECEBER COORDENADAS E FAZER O RECORTE (do content-script.js)
-    // ==========================================================
-    if (request.type === 'CROP_AREA') {
-        const { x, y, w, h, dpr } = request.data;
-
-        // CORREÇÃO DO devicePixelRatio (DPR):
-        const pixelRatio = dpr || 1;
-        const finalX = x * pixelRatio;
-        const finalY = y * pixelRatio;
-        const finalW = w * pixelRatio;
-        const finalH = h * pixelRatio;
-        
-        // 4. Tira um "print" da aba visível.
-        chrome.tabs.captureVisibleTab(null, { format: "png" }, (dataUrl) => {
-            if (chrome.runtime.lastError || !dataUrl) {
-                console.error("Não foi possível capturar a aba:", chrome.runtime.lastError?.message);
-                return;
-            }
-
-            // 5. Chama a função para recortar a imagem, usando as COORDENADAS CORRIGIDAS.
-            cropImage(dataUrl, finalX, finalY, finalW, finalH)
-                .then(croppedDataUrl => {
-                    // 6. Abre a nova aba (print.html)
-                    chrome.tabs.create({ url: "print.html" }, (newTab) => {
-
-                        // 7. Envia a imagem recortada após a aba carregar
-                        chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
-                            if (tabId === newTab.id && info.status === 'complete') {
-                                chrome.tabs.onUpdated.removeListener(listener);
-
-                                chrome.tabs.sendMessage(newTab.id, {
-                                    type: 'PRINT_IMAGE',
-                                    image: croppedDataUrl
-                                });
-                            }
-                        });
-                    });
-                })
-                .catch(error => {
-                    console.error("Erro ao recortar a imagem:", error);
-                });
-        });
-
-        return true;
-    }
-});
-
-/**
- * Função Auxiliar: Recorta a Imagem.
- * Usa OffscreenCanvas para manipulação de imagem no Service Worker.
- */
+// FUNÇÃO DE RECORTAR IMAGEM 
 async function cropImage(dataUrl, cropX, cropY, cropWidth, cropHeight) {
     const response = await fetch(dataUrl);
     const blob = await response.blob();
@@ -122,3 +45,170 @@ async function cropImage(dataUrl, cropX, cropY, cropWidth, cropHeight) {
         reader.readAsDataURL(croppedBlob);
     });
 }
+
+
+// FUNÇÃO DE PROCESSAMENTO DO QR CODE
+async function processQRCode(dataUrl, cropX, cropY, cropWidth, cropHeight, tabId) {
+    const finalX = Math.round(cropX);
+    const finalY = Math.round(cropY);
+    const finalW = Math.round(cropWidth);
+    const finalH = Math.round(cropHeight);
+
+    const response = await fetch(dataUrl);
+    const blob = await response.blob();
+
+    createImageBitmap(blob)
+        .then(imageBitmap => {
+            const canvas = new OffscreenCanvas(finalW, finalH);
+            const ctx = canvas.getContext('2d');
+
+            ctx.drawImage(
+                imageBitmap,
+                finalX, finalY, finalW, finalH,
+                0, 0, finalW, finalH
+            );
+            
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const qrResult = decodeQRCode(imageData);
+            
+            chrome.tabs.sendMessage(tabId, {
+                type: 'QR_CODE_RESULT',
+                data: { result: qrResult || "Nenhum QR Code válido encontrado na área selecionada." }
+            }, 
+            
+            () => { 
+                if (chrome.runtime.lastError) {
+                    console.warn(`Erro (silenciado) ao enviar QR_CODE_RESULT para a tab ${tabId}:`, chrome.runtime.lastError.message);
+                }
+            });
+        })
+        .catch(error => {
+            console.error("Erro no processamento do QR Code:", error);
+            
+            chrome.tabs.sendMessage(tabId, {
+                type: 'QR_CODE_RESULT',
+                data: { result: `Erro ao processar QR Code: ${error.message}` }
+            }, () => { 
+                if (chrome.runtime.lastError) {
+                    console.warn(`Erro (silenciado) ao enviar QR_CODE_RESULT para a tab ${tabId}:`, chrome.runtime.lastError.message);
+                }
+            });
+        });
+}
+
+
+// LISTENERS DE MENSAGENS
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+
+    // INICIAR SELEÇÃO PARA IMPRESSÃO
+    if (request.action === 'START_PRINT_SELECTION') {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            const tab = tabs[0];
+            if (tab && !tab.url.startsWith('chrome://')) {
+                chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    files: ['print-selection.js'] 
+                });
+            } else {
+                console.warn("Extensão bloqueada em páginas internas do Chrome.");
+            }
+        });
+        return true;
+    }
+
+
+    // INICIAR SELEÇÃO PARA LEITURA QR CODE
+    if (request.action === 'START_QR_READING') {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            const tab = tabs[0];
+            if (tab && !tab.url.startsWith('chrome://')) {
+                chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    files: ['qr-selection.js'] 
+                });
+            } else {
+                console.warn("Extensão bloqueada em páginas internas do Chrome.");
+            }
+        });
+        return true;
+    }
+
+
+    // RECEBER ÁREA SELECIONADA DO SCRIPT DE IMPRESSÃO
+    if (request.type === 'CROP_AREA') { 
+        const tabId = sender.tab.id;
+        const { x, y, w, h, dpr } = request.data;
+        
+        chrome.tabs.captureVisibleTab(null, { format: 'png' }, (dataUrl) => {
+            
+            // Lógica de IMPRESSÃO
+            cropImage(dataUrl, x * dpr, y * dpr, w * dpr, h * dpr)
+            .then(croppedDataUrl => {
+                chrome.tabs.create({ url: "print.html" }, (newTab) => {
+                    const listener = function(tabId, info) {
+                        if (tabId === newTab.id && info.status === 'complete') {
+                            chrome.tabs.onUpdated.removeListener(listener);
+
+                            chrome.tabs.sendMessage(newTab.id, {
+                                type: 'PRINT_IMAGE',
+                                image: croppedDataUrl
+                            }, 
+                            
+                            () => { 
+                                if (chrome.runtime.lastError) {
+                                    console.error('Erro ao enviar PRINT_IMAGE:', chrome.runtime.lastError.message);
+                                }
+                            });
+                        }
+                    };
+                    chrome.tabs.onUpdated.addListener(listener);
+                });
+            })
+            .catch(error => {
+                console.error("Erro ao recortar a imagem para impressão:", error);
+            });
+        });
+        return true;
+    }
+
+
+    // RECEBER ÁREA SELECIONADA DO SCRIPT DE QR CODE 
+    if (request.type === 'QR_AREA_SELECTED') {
+        const tabId = sender.tab.id;
+        const { x, y, w, h, dpr } = request.data;
+        
+        chrome.tabs.captureVisibleTab(null, { format: 'png' }, (dataUrl) => {
+            
+            // Lógica de LEITURA QR CODE
+            processQRCode(dataUrl, x * dpr, y * dpr, w * dpr, h * dpr, tabId);
+        });
+        return true;
+    }
+
+
+    // IMPRIMIR ETIQUETA 
+    if (request.action === 'START_LABEL_PRINT') {
+        const { content } = request.data;
+        
+        chrome.tabs.create({ url: "print.html" }, (newTab) => {
+            const listener = function(tabId, info) {
+                if (tabId === newTab.id && info.status === 'complete') {
+                    chrome.tabs.onUpdated.removeListener(listener);
+                    
+                    chrome.tabs.sendMessage(newTab.id, {
+                        type: 'PRINT_LABEL',
+                        content: content
+                    }, 
+                    //Adiciona callback para evitar "Receiving end does not exist"
+                    () => { 
+                        if (chrome.runtime.lastError) {
+                            console.error('Erro ao enviar PRINT_LABEL:', chrome.runtime.lastError.message);
+                        }
+                    });
+                }
+            };
+            chrome.tabs.onUpdated.addListener(listener);
+        });
+        return true;
+    }
+});

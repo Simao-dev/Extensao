@@ -62,7 +62,6 @@ button:hover {
 }
 
 #qrcode-container {
-  width: 128px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 10px;
@@ -103,6 +102,15 @@ button:hover {
   display: inline-block;
   border: 1px solid #eee;
   border-radius: 4px;
+}
+
+.Gerador-btn {
+  background-color: #8b5cf6; 
+  color: white; 
+}
+
+.Gerador-btn:hover {
+  background-color: #7c3aed; 
 }
 
 #label-content canvas {
@@ -208,7 +216,7 @@ input[type="text"] {
   border-radius: 4px;
 }
 
-.Etiqueta-btn {
+.btn-read-qrcode {
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
@@ -230,8 +238,6 @@ input[type="text"] {
 
 
 /* ESTILOS DARK MODE */
-
-
 body.dark-mode {
     width: 300px;
     padding: 20px;
@@ -266,9 +272,17 @@ body.dark-mode .qr-size {
 
 body.dark-mode .input-action-btn,
 body.dark-mode .generate-qr-code,
-body.dark-mode .Etiqueta-btn {
+body.dark-mode .btn-read-qrcode {
     background-color: #3b82f6; 
     color: #1f2937;
+}
+
+/* ESTILOS DARK MODE */
+
+
+body.dark-mode .Gerador-btn {
+    background-color: #8b5cf6;
+    color: #1f2937; 
 }
 
 body.dark-mode .print-btn {
@@ -284,9 +298,6 @@ body.dark-mode .etiqueta-qrcode {
 
 
 /* ESTILOS DO TOGGLE SWITCH  */
-
-
-
 .toggle-container {
     top: 20px;
     right: 20px;
@@ -385,61 +396,49 @@ body.dark-mode .etiqueta-qrcode {
 
 
 @media print {
-    
-    /* Oculta tudo na página, exceto o que é explicitamente visível */
-    body {
-        margin: 0;
-        padding: 0;
-        visibility: hidden; 
-        
-        /* Anula qualquer centralização vertical indesejada do navegador/framework */
-        display: block !important; 
-        min-height: auto !important;
-        height: auto !important;
-    }
 
-    /* Remove margens da página para garantir o topo (Y) */
-    @page {
-        margin-top: 0;
-        margin-bottom: 0;
+  body {
+      margin: 0;
+      padding: 0;
+      visibility: hidden;
+      display: block !important; 
+      min-height: auto !important;
+      height: auto !important;
+  }
 
-    }
+  @page {
+      margin-top: 0;
+      margin-bottom: 0;
+  }
 
-    /* Estilo para o Container do QR Code  */
-    #label-content {
-        visibility: visible !important;
-        
-        /* Posiciona no TOPO (Y) */
-        position: absolute;
-        top: 0;
-        
-        /* Centraliza HORIZONTALMENTE (X) */
-        left: 50%;
-        transform: translateX(-50%); 
-        
-        /* Garante que o container se ajuste ao conteúdo (QR Code) */
-        width: auto;
-        max-width: fit-content; 
-        
-        /* Estilos de conteúdo (etiqueta) */
-        font-size: 10pt;
-        line-height: 1.2;
-        white-space: pre-wrap;
-        padding: 5mm; 
-    }
-    
-    /* Garante que a Imagem do QR Code fique centralizado dentro do #label-content */
-    #label-content canvas, 
-    #label-content img {
-        display: block;
-        margin: 0 auto;
-    }
-    
-    /* Regras do #printImage (se usado para alguma outra finalidade de impressão) */
-    #printImage {
-        width: 100%;
-        max-width: 100%;
-        height: auto; 
-        box-shadow: none;
-    }
+  #label-content {
+      visibility: visible !important;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);  
+      width: auto;
+      max-width: fit-content; 
+      line-height: 1.2;
+      font-size: 10pt;
+      padding: 5mm; 
+      white-space: pre-wrap;
+  }
+
+  #label-content canvas, 
+  #label-content img {
+      display: block;
+      margin: 0 auto;
+  }
+  
+  #printImage {
+      visibility: visible !important; 
+      position: absolute; 
+      top: 0;
+      left: 0;
+      margin: 0 !important;
+      width: 100%; 
+      max-width: 100%;
+      height: auto;
+      box-shadow: none;
+ }
 }
