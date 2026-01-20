@@ -4,7 +4,7 @@
 
 A extensão **Impressão de Seleção** é uma ferramenta multifuncional poderosa que centraliza utilidades essenciais do dia a dia. Ela permite que você interaja com o conteúdo visual da sua página de maneira rápida e eficiente, sem a necessidade de softwares externos ou downloads adicionais.
 
-| Detalhe | Descrição |
+| Detalhe |Impressão de Seleção  |
 | :--- | :--- |
 | **Versão Atual** | 2.1 |
 | **O que faz?** | Captura e imprime áreas específicas da tela, gera códigos QR personalizados e decodifica códigos QR visíveis em qualquer página web. |
