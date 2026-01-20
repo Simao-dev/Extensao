@@ -1,4 +1,4 @@
-# 🌟 Impressão de Seleção (Versão 2.0)
+# 🌟 Impressão de Seleção (Versão 2.1)
 
 ## 📖 Visão Geral
 
@@ -6,7 +6,7 @@ A extensão **Impressão de Seleção** é uma ferramenta multifuncional poderos
 
 | Detalhe | Descrição |
 | :--- | :--- |
-| **Versão Atual** | 2.0 |
+| **Versão Atual** | 2.1 |
 | **O que faz?** | Captura e imprime áreas específicas da tela, gera códigos QR personalizados e decodifica códigos QR visíveis em qualquer página web. |
 | **Compatibilidade** | Google Chrome, Microsoft Edge e navegadores baseados em Chromium. |
 
