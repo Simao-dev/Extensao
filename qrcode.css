@@ -394,13 +394,13 @@ body.dark-mode .etiqueta-qrcode {
     opacity: 0;
 }
 
-.link {
+.link, a {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
-  color: blue;
+  color: #ccc !important;
+  text-decoration: none !important
 }
-
 
 @media print {
 
