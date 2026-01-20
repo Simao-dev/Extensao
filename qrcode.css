@@ -394,6 +394,13 @@ body.dark-mode .etiqueta-qrcode {
     opacity: 0;
 }
 
+.link {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: blue;
+}
+
 
 @media print {
 
